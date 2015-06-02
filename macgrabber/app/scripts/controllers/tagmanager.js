@@ -8,12 +8,12 @@
  * Controller of the macgrabberApp
  */
 angular.module('macgrabberApp')
-  .controller('TagmanagerCtrl', function ($scope, TagModel, ComputerModel) {    
+  .controller('TagmanagerCtrl', function ($scope, TagModel, ComputerModel) {
     TagModel.all().then(function(tags) {
     	$scope.tags = tags.data;
     	$scope.tags.forEach(function(tag) {
     		tag.editing = false;
-    	})
+    	});
     });
 
     ComputerModel.all().then(function(computers) {
@@ -50,7 +50,7 @@ angular.module('macgrabberApp')
 		$scope.tagResults.forEach(function(tag) {
 			if (tag.selected) {
 				$scope.computers.forEach(function (computer) {
-					var index = computer.tags.indexOf(tag._id); 
+					var index = computer.tags.indexOf(tag._id);
 					if (index > -1) {
 						computer.tags.splice(index, 1);
 						ComputerModel.update(computer._id, computer);

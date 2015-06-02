@@ -14,7 +14,7 @@
 					<tr>
 					<td ng-class="{info: isTagActive('')}"><a href ng-click="setTag('')"><b>View All Computers</b></a></td>
 					</tr>
-					<tr ng-repeat="tag in tags | filter:tagFilter as tagResults">
+					<tr ng-repeat="tag in tags | filter:tagFilter as tagResults track by tag._id">
 						<td ng-class="{info: isTagActive(tag)}"><a href ng-click="setTag(tag)">{{ tag.name }}</a></td>
 					</tr>
 					<tr ng-if="tagResults.length == 0">
@@ -62,7 +62,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="computer in computers | filter:computerFilter | filter:{onBoard: true} | filterByTag:selectedTag as computerResults">
+				<tr ng-repeat="computer in computers | filter:computerFilter | filter:{onBoard: true} | filterByTag:selectedTag as computerResults track by computer._id">
 				<td><input ng-model="computer.selected" type="checkbox"></td>
 				<td>{{computer.name}}</td>
 				<td>{{computer.serialNumber}}</td>
@@ -71,8 +71,11 @@
 				<td style="text-align: center;">{{computer.imagedCount}}</td>
 				<td>{{computer.wirelessMAC}}</td>
 				</tr>
-				<tr ng-if="computerResults.length == 0">
-				<td colspan="100%"><strong>No Computers Found</strong></td>
+				<tr ng-if="!loading && computerResults.length == 0">
+				<td colspan="100%" class="text-center"><strong>No Computers Found</strong></td>
+				</tr>
+				<tr ng-if="loading">
+				<td colspan="100%" class="text-center"><strong>Please Wait, Loading...</strong></td>
 				</tr>
 			</tbody>
 			</table>

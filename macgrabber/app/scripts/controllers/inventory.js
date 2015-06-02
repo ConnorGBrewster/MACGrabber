@@ -8,10 +8,12 @@
  * Controller of the macgrabberApp
  */
 angular.module('macgrabberApp')
-  .controller('InventoryCtrl', function ($scope, ComputerModel, TagModel) {    
+  .controller('InventoryCtrl', function ($scope, ComputerModel, TagModel) {
     $scope.tags = [];
   	$scope.computers = [];
   	$scope.selectedTag = '';
+    $scope.loading = true;
+    console.log($scope.loading);
 
   	TagModel.all().then(function (result) {
   		$scope.tags = result.data;
@@ -22,6 +24,8 @@ angular.module('macgrabberApp')
   	ComputerModel.all().then(function (result) {
   		$scope.computers = result.data;
   		$scope.updateTagNames();
+      $scope.loading = false;
+      console.log($scope.loading);
   	});
 
   	$scope.isTagActive = function(tag) {
@@ -108,7 +112,7 @@ angular.module('macgrabberApp')
           formattedMAC = formattedMAC.replace(/:/g, '');
           formattedMAC = formattedMAC.toLowerCase();
           results.push({
-            computerName: computer.name, 
+            computerName: computer.name,
             wirelessMAC: formattedMAC
           });
         }
@@ -147,7 +151,7 @@ angular.module('macgrabberApp')
             computer.tags.splice(index, 1);
             ComputerModel.update(computer._id, computer);
           }
-          
+
           index = $scope.tagDropdown.computers.indexOf(computer._id);
           if (index > -1) {
             $scope.tagDropdown.computers.splice(index, 1);
